@@ -113,7 +113,11 @@ public class PdfGenerator {
 
 
     public interface PageSizeStep {
-        FileNameStep setPageSize(PageSize pageSize);
+        CustomSizeStep setPageSize(PageSize pageSize);
+    }
+    
+    public interface CustomSizeStep {
+        FileNameStep setPageSize(int width,int height);
     }
 
 
@@ -131,7 +135,7 @@ public class PdfGenerator {
     }
 
 
-    public static class Builder implements Build, FileNameStep, PageSizeStep
+    public static class Builder implements Build, FileNameStep, PageSizeStep, CustomSizeStep
             , LayoutXMLSourceIntakeStep, ViewSourceIntakeStep, ViewIDSourceIntakeStep
             , FromSourceStep, ContextStep {
 
@@ -439,7 +443,7 @@ public class PdfGenerator {
         }
 
         @Override
-        public FileNameStep setPageSize(PageSize pageSize) {
+        public CustomSizeStep setPageSize(PageSize pageSize) {
             this.pageSize = pageSize;
             return this;
         }
@@ -455,6 +459,14 @@ public class PdfGenerator {
             this.fileName = fileName;
             return this;
         }
+        
+        @Override
+        public FileNameStep setCustomSize(int width,int height) {
+            this.pageWidthInPixel = width;
+            this.pageHeightInPixel = height;
+            return this;
+        }
+
 
 
         @Override
