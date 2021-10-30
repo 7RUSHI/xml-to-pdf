@@ -53,7 +53,7 @@ public class PdfGenerator {
     public static int WRAP_CONTENT_WIDTH = 0, WRAP_CONTENT_HEIGHT = 0;
 
     public static ContextStep getBuilder(int width,int height) {
-        a4HeightInPX=width;
+        a4WidthInPX=width;
         a4HeightInPX=height;
         a4HeightInPostScript = (int) (a4HeightInPX * postScriptThreshold);
         a4WidthInPostScript = (int) (a4WidthInPX * postScriptThreshold);
