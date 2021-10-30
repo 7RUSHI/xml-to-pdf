@@ -42,17 +42,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class PdfGenerator {
 
     public static double postScriptThreshold = 0.75;
-    public final static int a4HeightInPX = 2480;
-    public final static int a4WidthInPX = 3508;
+    public static int a4HeightInPX;
+    public static int a4WidthInPX;
     public final static int a5HeightInPX = 1748;
     public final static int a5WidthInPX = 2480;
 
-    public static int a4HeightInPostScript = (int) (a4HeightInPX * postScriptThreshold);
-    public static int a4WidthInPostScript = (int) (a4WidthInPX * postScriptThreshold);
+    public static int a4HeightInPostScript;
+    public static int a4WidthInPostScript;
 
     public static int WRAP_CONTENT_WIDTH = 0, WRAP_CONTENT_HEIGHT = 0;
 
-    public static ContextStep getBuilder() {
+    public static ContextStep getBuilder(int width,int height) {
+        a4HeightInPX=width;
+        a4HeightInPX=height;
+        a4HeightInPostScript = (int) (a4HeightInPX * postScriptThreshold);
+        a4WidthInPostScript = (int) (a4WidthInPX * postScriptThreshold);
         return new Builder();
     }
 
@@ -113,11 +117,7 @@ public class PdfGenerator {
 
 
     public interface PageSizeStep {
-        CustomSizeStep setPageSize(PageSize pageSize);
-    }
-    
-    public interface CustomSizeStep {
-        FileNameStep setCustomPageSize(int width,int height);
+        FileNameStep setPageSize(PageSize pageSize);
     }
 
 
@@ -135,7 +135,7 @@ public class PdfGenerator {
     }
 
 
-    public static class Builder implements Build, FileNameStep, PageSizeStep, CustomSizeStep
+    public static class Builder implements Build, FileNameStep, PageSizeStep
             , LayoutXMLSourceIntakeStep, ViewSourceIntakeStep, ViewIDSourceIntakeStep
             , FromSourceStep, ContextStep {
 
@@ -443,7 +443,7 @@ public class PdfGenerator {
         }
 
         @Override
-        public CustomSizeStep setPageSize(PageSize pageSize) {
+        public FileNameStep setPageSize(PageSize pageSize) {
             this.pageSize = pageSize;
             return this;
         }
@@ -459,16 +459,7 @@ public class PdfGenerator {
             this.fileName = fileName;
             return this;
         }
-        
-        @Override
-        public FileNameStep setCustomPageSize(int width,int height) {
-            this.pageWidthInPixel = width;
-            this.pageHeightInPixel = height;
-            return this;
-        }
-
-
-
+       
         @Override
         public PageSizeStep fromViewID(@LayoutRes Integer relatedParentLayoutID, Activity activity, @IdRes Integer... xmlResourceList) {
             viewList = Utils.getViewListFromID(activity, relatedParentLayoutID, Arrays.asList(xmlResourceList), pdfGeneratorListener);
