@@ -117,7 +117,7 @@ public class PdfGenerator {
     }
     
     public interface CustomSizeStep {
-        FileNameStep setPageSize(int width,int height);
+        FileNameStep setCustomPageSize(int width,int height);
     }
 
 
@@ -461,7 +461,7 @@ public class PdfGenerator {
         }
         
         @Override
-        public FileNameStep setCustomSize(int width,int height) {
+        public FileNameStep setCustomPageSize(int width,int height) {
             this.pageWidthInPixel = width;
             this.pageHeightInPixel = height;
             return this;
